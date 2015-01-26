@@ -574,17 +574,17 @@ public class Xpp3ReaderGenerator
         sc.add( "for ( int i = parser.getAttributeCount() - 1; i >= 0; i-- )" );
         sc.add( "{" );
         sc.indent();
-        sc.add( "String name = parser.getAttributeName( i );" );
-        sc.add( "String value = parser.getAttributeValue( i );" );
+        sc.add( "String attributeName = parser.getAttributeName( i );" );
+        sc.add( "String attributeValue = parser.getAttributeValue( i );" );
         sc.add( "" );
 
-        sc.add("if ( name.indexOf( ':' ) >= 0 )");
+        sc.add("if ( attributeName.indexOf( ':' ) >= 0 )");
         sc.add("{");
         sc.addIndented("// just ignore attributes with non-default namespace (for example: xmlns:xsi)");
         sc.add("}");
         if ( rootElement )
         {
-            sc.add( "else if ( \"xmlns\".equals( name ) )" );
+            sc.add( "else if ( \"xmlns\".equals( attributeName ) )" );
             sc.add( "{" );
             sc.addIndented( "// ignore xmlns attribute in root class, which is a reserved attribute name" );
             sc.add( "}" );
@@ -598,7 +598,7 @@ public class Xpp3ReaderGenerator
             {
                 String tagName = resolveTagName( field, xmlFieldMetadata );
 
-                sc.add( "else if ( \"" + tagName + "\".equals( name ) )" );
+                sc.add( "else if ( \"" + tagName + "\".equals( attributeName ) )" );
                 sc.add( "{" );
                 sc.indent();
 
@@ -617,7 +617,7 @@ public class Xpp3ReaderGenerator
         sc.add( "else" );
 
         sc.add( "{" );
-        sc.addIndented("checkUnknownAttribute( parser, name, tagName, strict );");
+        sc.addIndented("checkUnknownAttribute( parser, attributeName, tagName, strict );");
         sc.add( "}" );
 
         sc.unindent();
@@ -948,7 +948,7 @@ public class Xpp3ReaderGenerator
         String parserGetter;
         if ( xmlFieldMetadata.isAttribute() )
         {
-            parserGetter = "value"; // local variable created in the parsing block
+            parserGetter = "attributeValue"; // local variable created in the parsing block
         }
         else
         {
