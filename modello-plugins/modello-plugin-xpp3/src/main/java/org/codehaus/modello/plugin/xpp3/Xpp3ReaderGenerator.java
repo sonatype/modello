@@ -480,7 +480,7 @@ public class Xpp3ReaderGenerator
 
         String capClassName = capitalise( className );
 
-        String uncapClassName = uncapitalise( className );
+        String uncapClassName = "_" + uncapitalise( className );
 
         JMethod unmarshall = new JMethod( "parse" + capClassName, new JClass( className ), null );
         unmarshall.getModifiers().makePrivate();
